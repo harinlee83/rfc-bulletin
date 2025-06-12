@@ -4,6 +4,7 @@ import json
 from dotenv import load_dotenv
 from requests.auth import HTTPBasicAuth
 from bs4 import BeautifulSoup
+from datetime import date
 
 load_dotenv()
 
@@ -54,7 +55,7 @@ def get_latest_plan_id() -> int:
     """Returns the ID of the most recently updated plan."""
 
     # Sorting by the latest updated plan
-    url = f"{API_BASE_URL}/services/v2/service_types/{MORNING_WORSHIP_SERVICE_TYPE_ID}/plans?order=-updated_at"
+    url = f"{API_BASE_URL}/services/v2/service_types/{MORNING_WORSHIP_SERVICE_TYPE_ID}/plans?order=sort_date&after={date.today().strftime('%Y-%m-%d')}T10:00:00Z&filter=after"
     response = requests.get(url, auth=HTTPBasicAuth(APP_ID, SECRET))
 
     if response.status_code != 200:
